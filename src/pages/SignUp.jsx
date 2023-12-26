@@ -3,6 +3,14 @@ import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 import {Link} from "react-router-dom";
 import OAuth from "../components/OAuth";
+import {getAuth, createUserWithEmailAndPassword,  updateProfile,} from "firebase/auth"
+import {db} from "../firebase"
+
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+
+// adding package for notificati on thorugh Toastify 
+import {toast} from "react-toastify";
 
 function SignUp() {
 
@@ -13,9 +21,15 @@ function SignUp() {
     email: "",
     password: "",
   });
-  const {name, email, password } = formData;
 
+
+
+  const {name, email, password } = formData;
+  //  console.log(name)
   // function for email and input data for sign in
+  // Initialize the useNavigate function  as follows
+  const  navigate = useNavigate();
+
   function onChange(e) {
     // console.log(e.target.value);
     // Whatever we typed saved in formdata can be checked using  brwoser developer tool
@@ -24,6 +38,38 @@ function SignUp() {
       [e.target.id]: e.target.value,
     }));
   }
+  // Function for submit a form after creating database and storage in Google Firebase.
+  async function onSubmit(e){
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+      const userCredential =  await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password);
+      
+      updateProfile(auth.currentUser, {
+            displayName:name,
+          });
+      
+      const user = userCredential.user;
+      const formDataCopy = {...formData};
+      delete  formDataCopy.password;
+      formDataCopy.timestamp = serverTimestamp();
+
+          // adding a user in the Database as follows:
+        await setDoc(doc(db, "users", user.uid), formDataCopy);
+      // add a "users" collection
+      // console.log(user);
+      toast.success("Sign up was successfull")
+      navigate("/");
+    } catch (error) {
+      // console.log(error); Adding notification using react  toastify as follows:
+      toast.error("Something went wrong");
+    }
+
+  }
+   
 
   return (
     <section>
@@ -37,7 +83,7 @@ function SignUp() {
           />
         </div>
         <div className="w-full md:w-[67%] lg:w-[40%] lg:ml-20">
-          <form>
+          <form onSubmit={onSubmit}>
             <input
               className="w-full"
               type="text"
@@ -45,7 +91,8 @@ function SignUp() {
               value={name}
               onChange={onChange}
               placeholder="Full Name"
-              className="w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out mb-6"
+              className="w-full px-4 py-2 text-xl text-gray-700 bg-white
+               border-gray-300 rounded transition ease-in-out mb-6"
             />
             <input
               className="w-full"
@@ -54,7 +101,8 @@ function SignUp() {
               value={email}
               onChange={onChange}
               placeholder="Email Address"
-              className="w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out mb-6"
+              className="w-full px-4 py-2 text-xl text-gray-700
+               bg-white border-gray-300 rounded transition ease-in-out mb-6"
             />
             <div className="relative mb-6">
             <input
@@ -64,7 +112,8 @@ function SignUp() {
               value={password}
               onChange={onChange}
               placeholder="Password"
-              className="w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out "
+              className="w-full px-4 py-2 text-xl text-gray-700
+               bg-white border-gray-300 rounded transition ease-in-out "
             />
             {showPassword ? (
               <IoMdEyeOff className="absolute right-3 top-3 text-xl cursor-pointer"
@@ -79,19 +128,26 @@ function SignUp() {
             <div className="flex justify-between whitespace-nowrap text-sm sm:text-lg">
               <p className="mb-6"> Have a account?
 
-              <Link to="/sign-up" className="text-red-600 hover:text-red-700 transition duration-200 ease-in-out ml-1">Register</Link>
+              <Link to="/sign-in" className="text-red-600 hover:text-red-700 
+              transition duration-200 ease-in-out ml-1">Sign in</Link>
               </p>
               <p>
 
-              <Link to="/forgot-password " className="text-blue-600 hover:text-blue-50-800 transition duration-200 ease-in-out">Forgot-password</Link>
+              <Link to="/forgot-password " className="text-blue-600 hover:text-blue-50-800 
+              transition duration-200 ease-in-out">Forgot-password</Link>
               </p>
             </div>
 
             <button className="w-full bg-blue-600 text-white px-7 py-3 text-sm 
           font-medium uppercase rounded shadow-md hover:bg-blue-700 
           transition duration-150 ease-in-out hover:shadow-lg
-           active:bg-blue-800" type="submit"> Sign Up</button>
-           <div className="my-4 before:border-t flex before:flex-1 items-center before:border-gray-500 after:border-t flex after:flex-1 items-center after:border-gray-500">
+           active:bg-blue-800" type="submit">
+             Sign Up
+             </button>
+
+           <div className="my-4 before:border-t flex before:flex-1
+            items-center before:border-gray-500 after:border-t flex after:flex-1 
+            items-center after:border-gray-500">
             <p className="text-center font-semibold mx-4">Or</p>
            </div>
 
