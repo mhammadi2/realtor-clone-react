@@ -7,6 +7,7 @@ import Profile from "./pages/Profile";
 import Offers from "./pages/Offers";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
+import PrivateRoute from "./components/PrivateRoute"
 import ForgotPassword from "./pages/ForgotPassword";
 import Header from "./components/Header";
 import {ToastContainer} from "react-toastify"
@@ -17,24 +18,16 @@ function App() {
       <Router>
         <Header />
         <Routes>
-          <Route path="/" element={<Home />}>
-            {" "}
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<PrivateRoute/>}>
+            {/* if sign in works then go to profile page otherwise navigate to sing in page. */}
+            <Route path="/profile" element={<Profile />}/>
           </Route>
-          <Route path="/sign-in" element={<SignIn />}>
-            {" "}
-          </Route>
-          <Route path="/sign-up" element={<SignUp />}>
-            {" "}
-          </Route>
-          <Route path="/offers" element={<Offers />}>
-            {" "}
-          </Route>
-          <Route path="/forgot-password" element={<ForgotPassword />}>
-            {" "}
-          </Route>
-          <Route path="/profile" element={<Profile />}>
-            {" "}
-          </Route>
+          <Route path="/sign-in" element={<SignIn />}/>
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/offers" element={<Offers />}/>
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          
         </Routes>
       </Router>
       {/*  Adding toastify container to include for all pages for notification as follows*/}

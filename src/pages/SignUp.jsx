@@ -61,7 +61,7 @@ function SignUp() {
         await setDoc(doc(db, "users", user.uid), formDataCopy);
       // add a "users" collection
       // console.log(user);
-      toast.success("Sign up was successfull")
+      toast.success("Sign up was successfull");
       navigate("/");
     } catch (error) {
       // console.log(error); Adding notification using react  toastify as follows:
