@@ -39,6 +39,7 @@ function Profile() {
   }
   function onChange(e) {
     setFormData((prevState) => ({
+      //First  Need to keep previous state by the following spread operator
       ...prevState,
       [e.target.id]: e.target.value,
     }));
@@ -111,7 +112,7 @@ function Profile() {
           type="text" 
           id="name"
           value={name} 
-          disabled={changeDetail}
+          disabled={!changeDetail}
           onChange={onChange}
           // if the changgDetail is true then chang ethe backgron color to red
           className={`mb-6 w-full px-4 py-2 text-xl text-gray-700
@@ -140,6 +141,7 @@ function Profile() {
                   }}
                   className="text-red-600 hover:text-red-700 transition ease-in-out duration-200 ml-1 cursor-pointer"
                 >
+                  {/* if changeDetail is true then */}
                   {changeDetail ? "Apply change" : "Edit"}
     
                 </span>

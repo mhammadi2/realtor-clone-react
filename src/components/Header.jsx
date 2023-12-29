@@ -1,12 +1,26 @@
 import React from "react";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
+import {getAuth, onAuthStateChanged} from "firebase/auth"
 
 export default function Header() {
   const [pagesState, setPageState] = useState("Sign in")
   const location = useLocation();
   // console.log(location.pathname);
   const navigate = useNavigate();
+  const auth =getAuth();
+  useEffect(() =>
+  {
+    // to check authectication in Firbase=> use onAuthStateChanged function
+    onAuthStateChanged(auth, (user) =>
+    {
+      if (user){
+        setPageState("profile")
+      } else {
+        setPageState("Sign in");
+      }
+    })
+  }, [auth]);
 
   function pathMatchRoute(route) {
     if (route === location.pathname) {
