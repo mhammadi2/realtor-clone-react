@@ -3,16 +3,17 @@ import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 import {Link} from "react-router-dom";
 import OAuth from "../components/OAuth";
-
+import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
+import {toast } from "react-toastify"
+import { useNavigate } from "react-router-dom";
 function SignIn() {
-
   const [showPassword, setShowPassword] = useState(false);
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
   const { email, password } = formData;
+  const navigate = useNavigate();
 
   // function for email and input data for sign in
   function onChange(e) {
@@ -22,6 +23,23 @@ function SignIn() {
       ...prevState,
       [e.target.id]: e.target.value,
     }));
+  }
+
+  async function onSubmit(e){
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      if (userCredential.user) {
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error("Bad user credentials");
+    }
   }
 
   return (
@@ -36,7 +54,7 @@ function SignIn() {
           />
         </div>
         <div className="w-full md:w-[67%] lg:w-[40%] lg:ml-20">
-          <form>
+          <form onSubmit={onSubmit}>
             <input
               className="w-full"
               type="email"
@@ -82,7 +100,11 @@ function SignIn() {
             <button className="w-full bg-blue-600 text-white px-7 py-3 text-sm 
           font-medium uppercase rounded shadow-md hover:bg-blue-700 
           transition duration-150 ease-in-out hover:shadow-lg
-           active:bg-blue-800" type="submit"> Sign in</button>
+           active:bg-blue-800" type="submit"> 
+           Sign in
+           </button>
+
+
            <div className="my-4 before:border-t flex before:flex-1 items-center
             before:border-gray-500 after:border-t flex after:flex-1 items-center after:border-gray-500">
             <p className="text-center font-semibold mx-4">Or</p>

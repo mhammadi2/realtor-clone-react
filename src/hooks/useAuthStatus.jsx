@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 export function useAuthStatus() {
     const [ loggedIn, setLoggedIn] = useState(false);
     // Suppose new person is new checking
-    const [checkingStatus, setcheckingStatus] = useState(true)
+    const [checkingStatus, setCheckingStatus] = useState(true)
     // use  the folowing to check user is exist or not
 
     useEffect (()=> {
@@ -14,7 +14,7 @@ export function useAuthStatus() {
             if (user) {
                 setLoggedIn(true)
             }
-            setcheckingStatus(false)
+            setCheckingStatus(false)
         })
     },[])
   return { loggedIn, checkingStatus};

@@ -1,12 +1,14 @@
 import React from "react";
+import {useState} from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Header() {
+  const [pagesState, setPageState] = useState("Sign in")
   const location = useLocation();
   // console.log(location.pathname);
   const navigate = useNavigate();
 
-  function pathMathRoute(route) {
+  function pathMatchRoute(route) {
     if (route === location.pathname) {
       return true;
     }
@@ -27,19 +29,19 @@ export default function Header() {
         <div>
           <ul className="flex space-x-10">
             <li className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px] 
-            border-b-transparent ${pathMathRoute("/") && "text-blue-400 border-b-yellow-400"}`}
+            border-b-transparent ${pathMatchRoute("/") && "text-blue-400 border-b-yellow-400"}`}
             onClick={()=>navigate("/")}
             >
               Home
             </li>
             <li className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px] 
-            border-b-transparent ${pathMathRoute("/offers") && "text-blue-400 border-b-yellow-400"}`}
+            border-b-transparent ${pathMatchRoute("/offers") && "text-blue-400 border-b-yellow-400"}`}
             onClick={()=>navigate("/offers")}
             >Offers</li>
             <li className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px] 
-            border-b-transparent ${pathMathRoute("/sign-in") && "text-blue-400 border-b-yellow-400"}`}
-            onClick={()=>navigate("/sign-in")}
-            >Sign In</li>
+            border-b-transparent ${(pathMatchRoute("/sign-in") || pathMatchRoute("/profile")) && "text-blue-400 border-b-yellow-400"}`}
+            onClick={()=>navigate("/profile")}
+            >{pagesState}</li>
           </ul>
         </div>
       </header>

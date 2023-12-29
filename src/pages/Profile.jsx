@@ -106,17 +106,25 @@ function Profile() {
       <h1 className="text-center text-3xl mt-6 font-bold"> My Profile</h1>
       <div className="w-full md:w-[50%] mt-6 px-3">
         <form>
-          <input type="text" 
+          {/* Input Name */}
+          <input 
+          type="text" 
+          id="name"
           value={name} 
           disabled={changeDetail}
           onChange={onChange}
-          // if the changgDetai is true then chang ethe backgron color to red
-          className={`mb-6 w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out ${
-            changeDetail && "bg-red-200 focus:bg-red-200"
-          }`} />
+          // if the changgDetail is true then chang ethe backgron color to red
+          className={`mb-6 w-full px-4 py-2 text-xl text-gray-700
+           bg-white border border-gray-300 rounded transition ease-in-out 
+           ${changeDetail && "bg-red-200 focus:bg-red-200"
+             }`} />
            
            {/* Email Input */}
-          <input type="email" id ="email" value={email} disabled 
+          <input 
+          type="email" 
+          id ="email" 
+          value={email} 
+          disabled 
           
           className="w-full px-4 py-2 text-x1 text-gray-700
            bg-white border border-gray-300 rounded transition ease-in-out" />
@@ -126,7 +134,7 @@ function Profile() {
            Do you want to change your name?
            <span
                   onClick={() => {
-                      // if change detail is true the submit th eform
+                      // if change detail is true the submit form
                     changeDetail && onSubmit();
                     setChangeDetail((prevState) => !prevState);
                   }}
@@ -135,15 +143,13 @@ function Profile() {
                   {changeDetail ? "Apply change" : "Edit"}
     
                 </span>
-
            </p> 
             <p 
                 onClick={onLogout}
-                className="text-blue-600 hover:text-blue-800 transition duration-200 ease-in-out cursor-pointer">
+                className="text-blue-600 hover:text-blue-800 
+                transition duration-200 ease-in-out cursor-pointer">
             Sign out
             </p>
-
-
            </div>
         </form>
       </div>
